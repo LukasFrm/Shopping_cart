@@ -1,5 +1,11 @@
 import React, { Component } from "react";
-import { Container, ListGroup, ListGroupItem, Button } from "reactstrap";
+import {
+	Container,
+	ListGroup,
+	ListGroupItem,
+	Button,
+	Spinner
+} from "reactstrap";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMinus } from "@fortawesome/free-solid-svg-icons";
@@ -11,6 +17,7 @@ import ItemModal from "../components/ItemModal";
 class ShoppingList extends Component {
 	componentDidMount() {
 		this.props.getItems();
+		console.log(this.props);
 	}
 
 	onDeleteClick = id => {
@@ -22,16 +29,17 @@ class ShoppingList extends Component {
 		return (
 			<Container>
 				<ItemModal />
+				{this.props.item.loading && <Spinner color="primary" />}
 				<ListGroup>
 					<TransitionGroup className="shopping-list">
-						{items.map(({ id, name }) => (
-							<CSSTransition key={id} timeout={200} classNames="fade">
+						{items.map(({ _id, name }) => (
+							<CSSTransition key={_id} timeout={200} classNames="fade">
 								<ListGroupItem>
 									<Button
 										className="remove-btn"
 										color="danger"
 										size="sm"
-										onClick={() => this.onDeleteClick(id)}
+										onClick={() => this.onDeleteClick(_id)}
 									>
 										<FontAwesomeIcon icon={faMinus} />
 									</Button>
